@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/54c6fb1b14.js"crossorigin="anonymous"></script>
+    
+</head>
+<body>
+   <div class="container">
+    <div id="first">
+        <input type="text" id="search" placeholder="Enter City Name">
+        <button id="btn">Search Here</button>
+    </div>
+
+    <div id="weather_info">
+        <img src="img/clouds.png" id="image">
+        <h3 id="temp">23°C</h3>
+        <h3 id="city">New York</h3>
+
+         <div class="details">
+            <div class="col1">
+            <img src="img/humidity.png">
+            <h3 id="humidity">50%</h3>
+            </div>
+
+            <div class="col2">
+                <img src="img/wind-speed.png">
+                <h3 id="wind">50km/hr</h3>
+            </div>
+
+         </div>
+    </div>
+   </div>
+
+ <script>
+        let search = document.getElementById('search');
+        let btn = document.getElementById('btn');
+        let temp = document.getElementById('temp');
+        let city = document.getElementById('city');
+        let humidity = document.getElementById('humidity');
+        let wind = document.getElementById('wind');
+        let images = document.getElementById('image');
+        let weather_info = document.getElementById('weather_info');
+
+         btn.addEventListener("click", ()=>{
+            getWeather(search.value);
+            weather_info.style.display = 'block'; 
+         })
+
+        const apiKey = "cc0d542efc81171bc3c6bf602f37833b";
+        const api_url = "https://api.openweathermap.org/data/2.5/weather?units=metric&q="; 
+        let getWeather = async (selectedCity) =>{
+             const response = await fetch(api_url + selectedCity + `&appid=${apiKey}`);
+             let data = await response.json(); 
+             console.log(data);
+            city.innerHTML = data.name;
+            temp.innerHTML = Math.floor(data.main.temp) + "°C";
+            humidity.innerHTML = data.main.humidity + "%";
+            wind.innerHTML = data.wind.speed + "km/hr";
+
+            if(data.weather[0].main == "Clouds"){
+            images.src = "img/clouds.png";
+            }
+            else if(data.weather[0].main == "Drizzle"){
+            images.src = "img/drizzle.png";
+            }
+            else if(data.weather[0].main == "Mist"){
+            images.src = "img/mist.png";
+            }
+            else if(data.weather[0].main == "Rain"){
+            images.src = "img/rain.png";
+            }
+            else{
+            images.src = "img/snow.png";
+            }           
+        }
+
+
+ </script>
+
+</body>
+</html>
